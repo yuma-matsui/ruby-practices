@@ -19,8 +19,8 @@ class Calendar
   
   # 見出しの曜日表示用
   def print_week
-    week = [' 日 ', ' 月 ', ' 火 ', ' 水 ', ' 木 ', ' 金 ', ' 土 ']
-    puts "#{week.join}"
+    week = ['日', '月', '火', '水', '木', '金', '土']
+    puts week.join('  ').center(22)
   end
   
   # カレンダーの出力
@@ -35,15 +35,10 @@ class Calendar
   end
   
   # カレンダーの各日付の空白挿入処理
-    def insert_space(d)
-      # 月の初日が日曜日以外の場合に空白を挿入
-      print "    " * d.wday if (d.wday != 0) && (d.day == 1)
-      
-      str = d.day.to_s
-      if d.day >= 10
-        str.center(4)
-      else
-        str.rjust(3).ljust(4)
-      end
-    end
+  def insert_space(d)
+    # 月の初日が日曜日以外の場合に空白を挿入
+    print "    " * d.wday if d.day == 1
+    str = d.day.to_s
+    str.rjust(3).ljust(4)
+  end
 end
