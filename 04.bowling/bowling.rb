@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class Bowling
+  MAX_SHOTS_NUMBER = 21
   def initialize(arg)
     @shots = []
     @frames = []
     init_shots(arg)
-    @third_shot = @shots.pop if @shots.size == 21
+    @last_frame_extra_shot = @shots.pop if @shots.size == MAX_SHOTS_NUMBER
     init_frames
     print_score
   end
@@ -36,7 +37,7 @@ class Bowling
       @frames << s
     end
     # 最終フレームに3投目を追加
-    @frames.last.push(@third_shot) if @frames.last.sum >= 10
+    @frames.last.push(@last_frame_extra_shot) if @frames.last.sum >= 10
   end
 
   def print_score
