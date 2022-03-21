@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'array_effects'
-
 class LS
   # 出力時の最大横列数
   MAX_WIDTH = 3
-
-  include ArrayEffects
 
   def initialize(path)
     path ||= './'
@@ -37,6 +33,20 @@ class LS
     sorts
   end
 
+  # 隠しファイルを配列から削除
+  def excludes_secret
+    @files.reject! { |f| f.start_with?('.') }
+  end
+
+  def sorts
+    @files.sort!
+  end
+
+  # 空白を挿入してファイル名を20文字に統一
+  def insert_space_into_file_name
+    @files.map! { |file| file.ljust(20) }
+  end
+
   # ファイル表示の際の横列数
   def column_num
     (@files.size.to_f / MAX_WIDTH).ceil
@@ -44,14 +54,9 @@ class LS
 
   # 横1列に表示されるファイルを格納した配列を要素に持つ配列
   def init_records
-    records = []
-    column_num.times do |i|
-      records <<
-        @files
-        .each_slice(column_num)
-        .map { |column| column[i] }
+    Array.new(column_num) do |i|
+      @files.each_slice(column_num).map { |column| column[i] }
     end
-    records
   end
 
   def print_files
