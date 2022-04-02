@@ -7,13 +7,12 @@ class LS
   def initialize(path, options)
     path ||= './'
     inspect_path(path) unless path == './'
-    @files = Dir.entries(path).sort!
-    @options = options
-    init_files
+    @files = Dir.entries(path).sort
+    apply_effects!(options)
   end
 
   def print_files
-    insert_space_into_file_name
+    insert_space_into_file_name!
     records = init_records
     records.each { |record| puts record.join("\t") }
   end
@@ -32,18 +31,14 @@ class LS
     exit
   end
 
-  # オプションの判定
-  def init_files
-    @options[:a] ? @files : excludes_secret
-  end
-
-  # 隠しファイルを配列から削除
-  def excludes_secret
-    @files.reject! { |f| f.start_with?('.') }
+  # 各オプションに対応した配列操作
+  def apply_effects!(options)
+    @files.reject! { |f| f.start_with?('.') } unless options[:a]
+    @files.reverse! if options[:r]
   end
 
   # 空白を挿入してファイル名を20文字に統一
-  def insert_space_into_file_name
+  def insert_space_into_file_name!
     @files.map! { |file| file.ljust(20) }
   end
 
