@@ -39,6 +39,7 @@ class FilePermission
     sticky? ? attach_special_auth(permission, 'T') : permission
   end
 
+  # ファイルがsticky or SUID or GUIDの場合の処理
   def attach_special_auth(permission, set_char)
     set_char = set_char.downcase if excutable?(permission)
     permission
