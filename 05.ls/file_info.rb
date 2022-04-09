@@ -61,13 +61,7 @@ class FileInfo
   end
 
   def time_stamp
-    @file
-      .mtime
-      .strftime('%m %d %H:%M')
-      .split(' ')
-      .map
-      .each_with_index { |char, idx| idx <= 1 ? char.gsub(/0(.)/, '\1').rjust(2) : char }
-      .join(' ')
+    @file.mtime.strftime('%_m %_d %H:%M')
   end
 
   def symlink
