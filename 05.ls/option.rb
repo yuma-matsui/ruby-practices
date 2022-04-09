@@ -3,7 +3,7 @@
 require 'optparse'
 
 class Option
-  OPTIONS = %w[a r].freeze
+  OPTIONS = %w[a r l].freeze
 
   attr_reader :options
 
