@@ -21,10 +21,16 @@ class FileInfo
   end
 
   def all_info
-    str = "#{ftype}#{permission}#{nlink} #{owner_name}  #{group_name} #{size} #{time_stamp} #{file_name}"
+    str = "#{ftype}#{permission}#{nlink} #{owner_name}  #{group_name}  #{size} #{time_stamp} #{file_name}"
     str += " -> #{symlink}" if symlink?
     str
   end
+
+  def blocks
+    @file.blocks
+  end
+
+  private
 
   def ftype
     FILE_TYPE[@file.ftype]
@@ -36,10 +42,6 @@ class FileInfo
 
   def file_name
     @path.split('/').last
-  end
-
-  def blocks
-    @file.blocks
   end
 
   def nlink
@@ -59,12 +61,7 @@ class FileInfo
   end
 
   def time_stamp
-    time = @file.mtime
-    month = time.month.to_s.rjust(2)
-    day = time.day.to_s.rjust(2)
-    hour = time.hour.to_s.rjust(2, '0')
-    min = time.min.to_s.rjust(2, '0')
-    "#{month} #{day} #{hour}:#{min}"
+    @file.mtime.strftime('%_m %_d %H:%M')
   end
 
   def symlink

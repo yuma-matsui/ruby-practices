@@ -39,17 +39,17 @@ class LS
   def apply_effects!
     @files.reject! { |f| f.start_with?('.') } unless @options[:a]
     @files.reverse! if @options[:r]
-    excute_l_option! if @options[:l]
   end
 
-  def excute_l_option!
-    @files.map! { |file_name| FileInfo.new("#{@path}/#{file_name}") }
+  def execute_l_option
+    @files.map { |file_name| FileInfo.new("#{@path}/#{file_name}") }
   end
 
   # lオプション用出力メソッド
   def print_with_l
-    puts "total #{@files.map(&:blocks).sum}"
-    @files.each { |file| puts file.all_info }
+    files = execute_l_option
+    puts "total #{files.map(&:blocks).sum}"
+    files.each { |file| puts file.all_info }
   end
 
   def print_without_l
