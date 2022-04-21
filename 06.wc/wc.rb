@@ -18,7 +18,7 @@ class WC
       next unless File.file?(file)
 
       paragraph = extract_paragraph_from(file)
-      puts "#{gen_all_info_array_from(paragraph).join} #{file}"
+      puts "#{gen_all_info_array_from(paragraph).join} #{File.basename(file)}"
     end
     puts total_info if @files.size > 1
   end
