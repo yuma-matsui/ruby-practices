@@ -47,7 +47,7 @@ class WC
     lines = paragraph.lines.to_s.rjust(ADJUST_NUMBER)
     words = paragraph.words.to_s.rjust(ADJUST_NUMBER)
     bytesize = paragraph.bytesize.to_s.rjust(ADJUST_NUMBER)
-    [lines, words, bytesize]
+    @options[:l] ? [lines] : [lines, words, bytesize]
   end
 
   def total_info
@@ -62,6 +62,6 @@ class WC
     lines = paragraphs.map(&:lines).sum.to_s.rjust(ADJUST_NUMBER)
     words = paragraphs.map(&:words).sum.to_s.rjust(ADJUST_NUMBER)
     bytesize = paragraphs.map(&:bytesize).sum.to_s.rjust(ADJUST_NUMBER)
-    [lines, words, bytesize]
+    @options[:l] ? [lines] : [lines, words, bytesize]
   end
 end
