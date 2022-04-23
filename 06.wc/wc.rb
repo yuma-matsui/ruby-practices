@@ -17,18 +17,35 @@ class WC
       inspect(file)
       next unless File.file?(file)
 
-      paragraph = extract_paragraph_from(file)
-      puts "#{gen_all_info_array_from(paragraph).join} #{File.basename(file)}"
+      text = extract_text(file)
+      puts formated_items(text_items(text: text, file_name: File.basename(file)), @options[:l])
     end
-    puts total_info if @files.size > 1
+    puts formated_items(multiple_texts_items, @options[:l]) if @files.size > 1
   end
 
   private
 
   def accept_input
-    paragraph = StringContent.new(gets(nil))
-    puts gen_all_info_array_from(paragraph).join
+    text = StringContent.new(gets(nil))
+    puts formated_items(text_items(text: text), @options[:l])
     exit
+  end
+
+  def formated_items(text_items, option)
+    if option
+      "#{format_count(text_items[:line_count])} #{text_items[:file_name]}"
+    else
+      "#{format_count(text_items[:line_count])}#{format_count(text_items[:word_count])}#{format_count(text_items[:byte_count])} #{text_items[:file_name]}"
+    end
+  end
+
+  def text_items(text:, file_name: nil)
+    {
+      file_name: file_name,
+      line_count: text.line_count,
+      word_count: text.word_count,
+      byte_count: text.byte_count
+    }
   end
 
   def inspect(file)
@@ -39,29 +56,28 @@ class WC
     end
   end
 
-  def extract_paragraph_from(path)
-    StringContent.new(File.new(path).read)
+  def extract_text(file)
+    StringContent.new(File.new(file).read)
   end
 
-  def gen_all_info_array_from(paragraph)
-    lines = paragraph.lines.to_s.rjust(ADJUST_NUMBER)
-    words = paragraph.words.to_s.rjust(ADJUST_NUMBER)
-    bytesize = paragraph.bytesize.to_s.rjust(ADJUST_NUMBER)
-    @options[:l] ? [lines] : [lines, words, bytesize]
+  def format_count(count)
+    count.to_s.rjust(ADJUST_NUMBER)
   end
 
-  def total_info
-    paragraphs =
+  def multiple_texts_items
+    texts =
       @files
-      .select { |path| File.file?(path) }
-      .map { |path| extract_paragraph_from(path) }
-    "#{gen_total_info_array_from(paragraphs).join} total"
+      .select { |file| File.file?(file) }
+      .map { |file| extract_text(file) }
+    calc_multiple_texts_items(texts)
   end
 
-  def gen_total_info_array_from(paragraphs)
-    lines = paragraphs.map(&:lines).sum.to_s.rjust(ADJUST_NUMBER)
-    words = paragraphs.map(&:words).sum.to_s.rjust(ADJUST_NUMBER)
-    bytesize = paragraphs.map(&:bytesize).sum.to_s.rjust(ADJUST_NUMBER)
-    @options[:l] ? [lines] : [lines, words, bytesize]
+  def calc_multiple_texts_items(texts)
+    {
+      file_name: 'total',
+      line_count: texts.map(&:line_count).sum,
+      word_count: texts.map(&:word_count).sum,
+      byte_count: texts.map(&:byte_count).sum
+    }
   end
 end

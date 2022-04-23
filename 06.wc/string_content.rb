@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 class StringContent
-  def initialize(sentence)
-    @sentence = sentence
+  def initialize(text)
+    @text = text
   end
 
-  def words
-    @sentence.split(' ').size
+  def word_count
+    @text.split(' ').size
   end
 
-  def lines
-    @sentence.split("\n").size
+  def line_count
+    @text.split("\n").size
   end
 
-  def bytesize
-    @sentence.bytesize
+  def byte_count
+    @text.bytesize
   end
 end
