@@ -1,44 +1,65 @@
 # frozen_string_literal: true
 
-require_relative 'score_record'
-require_relative 'frames'
 require_relative 'frame'
 
 class Game
-  attr_reader :game
+  MAX_SHOTS_NUMBER = 21
 
   def initialize(marks)
-    score_record = ScoreRecord.generate(marks)
-    frames = Frames.generate(score_record)
-    @game = generate_game(frames)
+    @frames = generate_frames(marks)
   end
 
   def score
-    score = 0
-    game.each_with_index do |frame, index|
-      next_frame = game[index + 1] unless index == 9
-      score += calc_score(frame, next_frame, index)
-    end
-    score
+    score = @frames.map(&:score).sum
+    add_extra_score(score)
   end
 
   private
 
-  def generate_game(frames)
-    frames.map { |frame| Frame.new(*frame) }
+  def generate_frames(marks)
+    score_record = init_record(marks)
+    frames = init_frames(score_record)
+    frames.map.with_index { |frame, index| Frame.new(index, *frame) }
   end
 
-  def calc_score(frame, next_frame, index)
-    if frame.frame.size == 3
-      frame.score
-    elsif (frame.frame.size == 1) && (next_frame.frame.size == 1)
-      10 + next_frame.score + game[index + 2].first_shot.score
-    elsif frame.frame.size == 1
-      10 + next_frame.first_shot.score + next_frame.second_shot.score
-    elsif frame.score == 10
-      10 + next_frame.first_shot.score
+  def init_record(marks)
+    records = []
+    marks.split(',').each do |mark|
+      records << mark
+      records << '0' if (records.size < 18) && (mark == 'X')
+    end
+    records
+  end
+
+  def init_frames(score_record)
+    frames = []
+    last_frame_extra_shot = score_record.pop if extra_shot?(score_record)
+
+    score_record.each_slice(2) { |frame| frames << frame }
+    frames.last.push(last_frame_extra_shot) unless last_frame_extra_shot.nil?
+    frames
+  end
+
+  def extra_shot?(score_record)
+    score_record.size == MAX_SHOTS_NUMBER
+  end
+
+  def add_extra_score(score)
+    @frames.each do |frame|
+      next_frame = @frames[frame.order + 1] unless frame.last?
+      after_next_frame = @frames[frame.order + 2]
+      score += calc_extra_score(frame, next_frame, after_next_frame) if frame.strike? || frame.spare?
+    end
+    score
+  end
+
+  def calc_extra_score(frame, next_frame, after_next_frame)
+    if frame.strike? && next_frame.strike?
+      next_frame.score + after_next_frame.first_shot.score
+    elsif frame.strike?
+      next_frame.first_shot.score + next_frame.second_shot.score
     else
-      frame.score
+      next_frame.first_shot.score
     end
   end
 end
