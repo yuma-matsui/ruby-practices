@@ -11,7 +11,10 @@ class Game
 
   def score
     score = @frames.map(&:score).sum
-    add_extra_score(score)
+    @frames.each do |frame|
+      score += add_extra_score(frame) if frame.strike? || frame.spare?
+    end
+    score
   end
 
   private
@@ -44,13 +47,10 @@ class Game
     score_record.size == MAX_SHOTS_NUMBER
   end
 
-  def add_extra_score(score)
-    @frames.each do |frame|
-      next_frame = @frames[frame.order + 1] unless frame.last?
-      after_next_frame = @frames[frame.order + 2]
-      score += calc_extra_score(frame, next_frame, after_next_frame) if frame.strike? || frame.spare?
-    end
-    score
+  def add_extra_score(frame)
+    next_frame = @frames[frame.order + 1]
+    after_next_frame = @frames[frame.order + 2]
+    calc_extra_score(frame, next_frame, after_next_frame)
   end
 
   def calc_extra_score(frame, next_frame, after_next_frame)
