@@ -14,30 +14,30 @@ class Frame
   end
 
   def score
-    shots.map(&:score).sum
+    @shots.map(&:score).sum
   end
 
   def last?
-    (shots.size == 3) || (order == 9)
+    (@shots.size == 3) || (@order == 9)
   end
 
   def strike?
-    shots.size == 1
+    @shots.size == 1
   end
 
   def spare?
-    (shots.size == 2) && (score == 10)
+    (@shots.size == 2) && (score == 10)
   end
 
   private
 
   def init_frame
-    return [first_shot, second_shot, @third_shot] unless @third_shot.mark.nil?
+    return [@first_shot, @second_shot, @third_shot] unless @third_shot.mark.nil?
 
-    if first_shot.mark == 'X'
-      [first_shot]
+    if @first_shot.mark == 'X'
+      [@first_shot]
     else
-      [first_shot, second_shot]
+      [@first_shot, @second_shot]
     end
   end
 end
