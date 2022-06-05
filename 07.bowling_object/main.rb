@@ -2,4 +2,4 @@
 
 require_relative 'game'
 
-puts Game.new(ARGV[0]).score
+puts Game.print_score(ARGV[0])

@@ -5,6 +5,10 @@ require_relative 'frame'
 class Game
   MAX_SHOTS_NUMBER = 21
 
+  def self.print_score(marks)
+    new(marks).score
+  end
+
   def initialize(marks)
     @frames = generate_frames(marks)
   end
