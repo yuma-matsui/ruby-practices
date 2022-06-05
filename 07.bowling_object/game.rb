@@ -26,12 +26,10 @@ class Game
   end
 
   def init_record(marks)
-    records = []
-    marks.split(',').each do |mark|
+    marks.split(',').each_with_object([]) do |mark, records|
       records << mark
       records << '0' if (records.size < 18) && (mark == 'X')
     end
-    records
   end
 
   def init_frames(score_record)
