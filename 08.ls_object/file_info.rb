@@ -37,7 +37,7 @@ class FileInfo
   end
 
   def permission
-    FilePermission.new(@file.mode).to_string
+    FilePermission.new(@file.mode).to_s
   end
 
   def file_name

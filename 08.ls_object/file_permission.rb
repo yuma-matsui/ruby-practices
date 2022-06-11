@@ -18,7 +18,7 @@ class FilePermission
     @supecial_auth = @mode_num[2]
   end
 
-  def to_string
+  def to_s
     "#{user_permission}#{group_permission}#{other_permission}"
   end
 
