@@ -20,10 +20,18 @@ class FileInfo
     @file = File.lstat(@path)
   end
 
-  def all_info
-    str = "#{ftype}#{permission}#{nlink} #{owner_name}  #{group_name}  #{size} #{time_stamp} #{file_name}"
-    str += " -> #{symlink}" if symlink?
-    str
+  def info
+    {
+      ftype: ftype,
+      permission: permission,
+      nlink: nlink,
+      owner_name: owner_name,
+      group_name: group_name,
+      size: size,
+      time_stamp: time_stamp,
+      file_name: file_name,
+      symlink: symlink
+    }
   end
 
   def blocks
@@ -65,7 +73,7 @@ class FileInfo
   end
 
   def symlink
-    File.readlink(@path)
+    symlink? ? File.readlink(@path) : nil
   end
 
   def symlink?
