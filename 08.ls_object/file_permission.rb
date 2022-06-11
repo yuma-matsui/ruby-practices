@@ -49,16 +49,11 @@ class FilePermission
       .join
   end
 
-  def sticky?
-    @supecial_auth == '1'
-  end
-
-  def set_gid?
-    @supecial_auth == '2'
-  end
-
-  def set_uid?
-    @supecial_auth == '4'
+  # 特殊権限のチェック用メソッドの定義
+  { sticky: '1', set_gid: '2', set_uid: '4' }.each do |k, v|
+    define_method("#{k}?") do
+      @supecial_auth == v
+    end
   end
 
   def excutable?(permission)
