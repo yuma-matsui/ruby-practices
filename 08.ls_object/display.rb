@@ -16,8 +16,7 @@ class LS::Display
 
   def print
     insert_space_into_file_name!
-    records = init_records
-    records.each { |record| puts record.join("\t") }
+    init_records.each { |record| puts record.join("\t") }
   end
 
   private
