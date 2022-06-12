@@ -7,10 +7,7 @@ class LS::DisplayWithL < LS::Display
   def print
     # 指定されたpathがファイルの場合表示しない
     puts "total #{total_size}" unless @files.size == 1
-    @files.each do |file|
-      info = file.info
-      puts file_info(info)
-    end
+    @files.each { |file| puts file_info(file.info) }
   end
 
   private
