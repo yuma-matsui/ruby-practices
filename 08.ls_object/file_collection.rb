@@ -7,13 +7,13 @@ require_relative 'display_with_l'
 require_relative 'modules/ls'
 
 class LS::FileCollection
-  def self.display(path)
-    new(path).display
+  def self.display(options, path)
+    new(options, path).display
   end
 
-  def initialize(path)
+  def initialize(options, path)
     @path = path || './'
-    @options = Option.new.options
+    @options = options
     inspect_path unless @path == './'
     @files = Dir.entries(@path).sort
     apply_effects!

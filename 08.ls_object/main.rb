@@ -4,4 +4,4 @@
 
 require_relative 'file_collection'
 
-LS::FileCollection.display(ARGV[0])
+LS::FileCollection.display(Option.new.options, ARGV[0])
