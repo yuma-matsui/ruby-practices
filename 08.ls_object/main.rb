@@ -3,5 +3,6 @@
 # frozen_string_literal: true
 
 require_relative 'file_collection'
+require_relative 'option'
 
 LS::FileCollection.display(Option.new.options, ARGV[0])

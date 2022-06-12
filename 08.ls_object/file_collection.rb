@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
+require_relative 'modules/ls'
 require_relative 'file_info'
-require_relative 'option'
 require_relative 'display'
 require_relative 'display_with_l'
-require_relative 'modules/ls'
 
 class LS::FileCollection
   def self.display(options, path)
