@@ -22,6 +22,7 @@ class FileInfo
 
   def info
     {
+      path: @path,
       blocks: blocks,
       ftype: ftype,
       permission: permission,
