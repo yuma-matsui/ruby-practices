@@ -22,6 +22,7 @@ class FileInfo
 
   def info
     {
+      blocks: blocks,
       ftype: ftype,
       permission: permission,
       nlink: nlink,
@@ -34,11 +35,11 @@ class FileInfo
     }
   end
 
+  private
+
   def blocks
     @file.blocks
   end
-
-  private
 
   def ftype
     FILE_TYPE[@file.ftype]
