@@ -33,6 +33,7 @@ class LS::FileCollection
       puts "ls: #{@path}: No such file or directory"
     elsif @options[:l]
       file = FileInfo.new(@path)
+      # Dislayクラスの初期化には配列を渡す必要がある
       LS::DisplayWithL.print([file])
     else
       puts File.basename(@path)
