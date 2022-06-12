@@ -2,6 +2,6 @@
 
 # frozen_string_literal: true
 
-require_relative 'ls'
+require_relative 'file_collection'
 
-LS.new(ARGV[0]).print_files
+LS::FileCollection.display(ARGV[0])
