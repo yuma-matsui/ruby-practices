@@ -3,7 +3,7 @@
 require_relative 'modules/ls'
 require_relative 'file_info'
 require_relative 'display'
-require_relative 'display_with_l'
+require_relative 'detailed_display'
 
 class LS::Command
   def self.display(options, path)
@@ -19,7 +19,7 @@ class LS::Command
   end
 
   def display
-    @options[:l] ? LS::DisplayWithL.print(@files) : LS::Display.print(@files)
+    @options[:l] ? LS::DetailedDisplay.print(@files) : LS::Display.print(@files)
   end
 
   private
@@ -33,7 +33,7 @@ class LS::Command
     elsif @options[:l]
       file = FileInfo.new(@path)
       # Dislayクラスの初期化には配列を渡す必要がある
-      LS::DisplayWithL.print([file])
+      LS::DetailedDisplay.print([file])
     else
       puts File.basename(@path)
     end

@@ -3,7 +3,7 @@
 require_relative 'display'
 require_relative 'modules/ls'
 
-class LS::DisplayWithL < LS::Display
+class LS::DetailedDisplay < LS::Display
   def print
     # path == Fileの場合表示しない
     puts "total #{total_size}" unless @files.size == 1
