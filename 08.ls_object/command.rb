@@ -13,16 +13,21 @@ class LS::Command
   def initialize(options, path)
     @path = path || './'
     @options = options
+    @display = display_or_detailed_display
     inspect_path unless @path == './'
     @files = Dir.entries(@path).sort
     apply_effects!
   end
 
   def display
-    @options[:l] ? LS::DetailedDisplay.print(@files) : LS::Display.print(@files)
+    @display.print(@files)
   end
 
   private
+
+  def display_or_detailed_display
+    @options[:l] ? LS::DetailedDisplay : LS::Display
+  end
 
   # コマンドライン引数のチェック
   def inspect_path
@@ -33,7 +38,7 @@ class LS::Command
     elsif @options[:l]
       file = FileInfo.new(@path)
       # Dislayクラスの初期化には配列を渡す必要がある
-      LS::DetailedDisplay.print([file])
+      @display.print([file])
     else
       puts File.basename(@path)
     end
