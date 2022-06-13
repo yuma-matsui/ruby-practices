@@ -5,7 +5,7 @@ require_relative 'file_info'
 require_relative 'display'
 require_relative 'display_with_l'
 
-class LS::FileCollection
+class LS::Command
   def self.display(options, path)
     new(options, path).display
   end

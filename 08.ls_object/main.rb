@@ -5,4 +5,4 @@
 require_relative 'file_collection'
 require_relative 'option'
 
-LS::FileCollection.display(Option.new.options, ARGV[0])
+LS::Command.display(Option.new.options, ARGV[0])
