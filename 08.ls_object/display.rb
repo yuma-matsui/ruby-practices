@@ -6,10 +6,6 @@ class LS::Display
   # 出力時の最大横列数
   MAX_WIDTH = 3
 
-  def self.print(files)
-    new(files).print
-  end
-
   def initialize(files)
     @files = files
   end

@@ -13,20 +13,20 @@ class LS::Command
   def initialize(options, path)
     @path = path || './'
     @options = options
-    @display = display_or_detailed_display
     inspect_path unless @path == './'
-    @files = Dir.entries(@path).sort
-    apply_effects!
+    files = Dir.entries(@path).sort
+    apply_effects!(files)
+    @display = display_or_detailed_display(files)
   end
 
   def display
-    @display.print(@files)
+    @display.print
   end
 
   private
 
-  def display_or_detailed_display
-    @options[:l] ? LS::DetailedDisplay : LS::Display
+  def display_or_detailed_display(files)
+    @options[:l] ? LS::DetailedDisplay.new(files) : LS::Display.new(files)
   end
 
   # コマンドライン引数のチェック
@@ -38,7 +38,7 @@ class LS::Command
     elsif @options[:l]
       file = FileInfo.new(@path)
       # Dislayクラスの初期化には配列を渡す必要がある
-      @display.print([file])
+      LS::DetailedDisplay.new([file]).print
     else
       puts File.basename(@path)
     end
@@ -46,9 +46,9 @@ class LS::Command
   end
 
   # 各オプションに対応した配列操作
-  def apply_effects!
-    @files.reject! { |f| f.start_with?('.') } unless @options[:a]
-    @files.reverse! if @options[:r]
-    @files.map! { |file| FileInfo.new("#{@path}/#{file}") } if @options[:l]
+  def apply_effects!(files)
+    files.reject! { |f| f.start_with?('.') } unless @options[:a]
+    files.reverse! if @options[:r]
+    files.map! { |file| FileInfo.new("#{@path}/#{file}") } if @options[:l]
   end
 end
